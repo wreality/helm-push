@@ -35,8 +35,12 @@ if [ "$USE_OCI_REGISTRY" == "TRUE" ] || [ "$USE_OCI_REGISTRY" == "true" ]; then
   echo "OCI SPECIFIED, USING HELM OCI FEATURES"
   REGISTRY=$(echo "${REGISTRY_URL}" | awk -F[/:] '{print $4}') # Get registry host from url
   echo "${REGISTRY_ACCESS_TOKEN}" | helm registry login -u ${REGISTRY_USERNAME} --password-stdin ${REGISTRY} # Authenticate registry
+  if [ "$UPDATE_DEPENDENCIES" == "-u" ]; then
+    echo "Updating dependencies for chart '$CHART_FOLDER'"
+    helm dependency update $CHART_FOLDER # update dependencies
+  fi
   echo "Packaging chart '$CHART_FOLDER'"
-  PKG_RESPONSE=$(helm package $CHART_FOLDER $UPDATE_DEPENDENCIES) # package chart
+  PKG_RESPONSE=$(helm package $CHART_FOLDER) # package chart
   echo "$PKG_RESPONSE"
   CHART_TAR_GZ=$(basename "$PKG_RESPONSE") # extract tar name from helm package stdout
   echo "Pushing chart $CHART_TAR_GZ to '$REGISTRY_URL'"
