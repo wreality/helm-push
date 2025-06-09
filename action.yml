@@ -1,62 +1,65 @@
 # action.yml
-name: 'Helm Push'
-description: 'Pushes a local chart to a ChartMuseum or OCI compatible registry. Supports token based auth and Chart.yaml version override.'
+name: "Helm Push"
+description: "Pushes a local chart to a ChartMuseum or OCI compatible registry. Supports token based auth and Chart.yaml version override."
 branding:
-  color: 'green'
-  icon: 'upload-cloud'
+  color: "green"
+  icon: "upload-cloud"
 inputs:
   access-token:
-    description: 'API Token with read/write permissions to the helm registry'
+    description: "API Token with read/write permissions to the helm registry"
     required: false
-    default: ''
+    default: ""
   username:
-    description: 'Username read/write permissions to the helm registry'
+    description: "Username read/write permissions to the helm registry"
     required: false
-    default: ''
+    default: ""
   password:
-    description: 'Password with read/write permissions to the helm registry'
+    description: "Password with read/write permissions to the helm registry"
     required: false
-    default: ''
+    default: ""
   registry-url:
-    description: 'Repository url'
+    description: "Repository url"
     required: true
-    default: ''
+    default: ""
   chart-folder:
-    description: 'Relative path to chart folder'
+    description: "Relative path to chart folder"
     required: false
-    default: 'chart'
+    default: "chart"
   version:
-    description: 'Chart Version'
+    description: "Chart Version"
     required: false
-    default: ''
+    default: ""
   appVersion:
-    description: 'App Version'
+    description: "App Version"
     required: false
-    default: ''
+    default: ""
   force:
-    description: 'Whether or not to override existing chart with same version'
+    description: "Whether or not to override existing chart with same version"
     required: false
-    default: 'false'
+    default: "false"
   update-dependencies:
     description: "Whether or not to update dependencies before packaging"
     required: false
     default: "false"
   useOCIRegistry:
-    description: 'If publishing to big cloud registries, utilizing OCI container spec for helm packages, set to true'
+    description: "If publishing to big cloud registries, utilizing OCI container spec for helm packages, set to true"
     required: false
-    default: 'false'
+    default: "false"
   add-repositories:
-    description: 'Optionally add list of Helm Repositories to add running `helm repo add $args` for each line'
+    description: "Optionally add list of Helm Repositories to add running `helm repo add $args` for each line"
     required: false
     # valid list of args for `helm repo add $args` each line maps to repo add e.g.
     # add-repositories: |
     #     stable https://charts.helm.sh/stable
     #     private https//private.internal --username private --password 'bulls eye'
     #     ...
-    default: ''
+    default: ""
+outputs:
+  chart-package:
+    description: "Path to the packaged chart"
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
+  using: "docker"
+  image: "Dockerfile"
   env:
     CHART_FOLDER: ${{ inputs.chart-folder }}
     FORCE: ${{ inputs.force }}
